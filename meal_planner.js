@@ -1,5 +1,3 @@
-
-
 var generateMeal = function() {
 	var dataItems,
 		target = parseInt($("#desiredCalories").val(), 10);
