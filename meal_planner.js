@@ -45,7 +45,7 @@ $(function() {
 	var mealsContainer = $("#meals"),
 		template = $("#mealTemplate").html(),
 		form = $("form"),
-		summary = $("summary"),
+		summary = $("#summary"),
 		numberOfMeals = $("#numberOfMeals"),
 		alert = $(".alert-danger");
 
