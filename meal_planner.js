@@ -28,10 +28,10 @@ var displayMeal = function(dataItems, mealContainer) {
 $(function() {
 	var mealContainer = $("#meal");
 
-	$("form").on("submit", function() {
-		event.preventDefault();
-
+	$("form").on("submit", function(event) {
 		var dataItems = generateMeal();
 		displayMeal(dataItems, mealContainer);
+
+		event.preventDefault();
 	});
 });
