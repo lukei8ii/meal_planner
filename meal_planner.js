@@ -5,7 +5,7 @@ var generateMeal = function() {
 	// logic to create a meal based on the parameters goes here
 
 	// start by just getting the first items that most closely satisfy the calorie limit
-	dataItems = subset_sum(data, target);
+	dataItems = subsetSum(data, target);
 
 	return dataItems;
 };

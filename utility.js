@@ -1,9 +1,10 @@
-var subset_sum = function(items, target) {
+var subsetSum = function(items, target) {
     items = shuffleArray(items);
-    
+
     var perms = [],
     margin = config.calorieMatchMargin,
     depth = config.calorieMatchDepth,
+    duplicateThreshold = config.duplicateThreshold,
     layer = 0,
     attempts = 0,
     sum,
@@ -16,7 +17,11 @@ var subset_sum = function(items, target) {
 
             if (attempts <= items.length * items.length) {
                 if (layer === 0) {
-                    perm = [items[0], items[i]];
+                    if (i > 0 || items[0].calories <= duplicateThreshold) {
+                        perm = [items[0], items[i]];
+                    } else {
+                        continue;
+                    }
                 } else {
                     perm = perms.shift();
                     perm.push(items[0]);
@@ -30,7 +35,8 @@ var subset_sum = function(items, target) {
 
                 perms.push(perm);
 
-                if (Math.abs(sum - target) <= margin){
+                if (Math.abs(sum - target) <= margin) {
+
                     return perm;
                 }
             } else {
@@ -47,6 +53,7 @@ var subset_sum = function(items, target) {
 
         return ss(items);
     }
+
     return ss(items);
 };
 
