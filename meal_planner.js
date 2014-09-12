@@ -76,7 +76,7 @@ $(function() {
 
 		resetResults(alert, mealsContainer, summary);
 
-		if (dataItems.length < mealCount) {
+		if (!dataItems || dataItems.length < mealCount) {
 			$(".alert-danger").show();
 		} else {
 			displayMeal(dataItems, template, mealCount, mealsContainer, summary);
