@@ -87,3 +87,13 @@ var shuffleArray = function(array) {
 
     return array;
 }
+
+var getIndexIfObjWithOwnAttr = function(array, attr, value) {
+    for (i = 0; i < array.length; i++) {
+        if (array[i].hasOwnProperty(attr) && array[i][attr] === value) {
+            return i;
+        }
+    }
+
+    return -1;
+}

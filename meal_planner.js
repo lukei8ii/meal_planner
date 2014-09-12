@@ -10,6 +10,27 @@ var generateMeal = function() {
 	return dataItems;
 };
 
+var formatDuplicates = function(dataItems) {
+	var uniqueItems = [];
+
+	$.each(dataItems, function(i, el){
+	    if ($.inArray(el, uniqueItems) === -1) {
+			delete el.count;
+			uniqueItems.push(el);
+		} else {
+			var dupeIndex = getIndexIfObjWithOwnAttr(uniqueItems, "name", el.name);
+
+			if (uniqueItems[dupeIndex].count) {
+				uniqueItems[dupeIndex].count++;
+			} else {
+				uniqueItems[dupeIndex].count = 2;
+			}
+		}
+	});
+
+	return uniqueItems;
+};
+
 var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, summary) {
 	var splitItems = splitArray(dataItems, numberOfMeals),
 		totalCalories = 0;
@@ -18,7 +39,7 @@ var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, s
 		var calorieCount = splitItems[i].length > 1 ? splitItems[i].reduce(function(prev, curr) {
 				return (prev.calories || prev) + curr.calories;
 			}) : splitItems[i][0].calories,
-			meal = { id: i + 1, calories: calorieCount, items: splitItems[i] },
+			meal = { id: i + 1, calories: calorieCount, items: formatDuplicates(splitItems[i]) },
 			rendered = Mustache.render(template, meal);
 
 		mealsContainer.append(rendered);

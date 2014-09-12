@@ -18,7 +18,13 @@
 			<p>Meal {{id}} - {{calories}} calories</p>
 			<ul>
 				{{#items}}
-				<li>{{name}} - {{calories}} calories</li>
+				<li>
+					{{name}}
+					{{#count}}
+					x {{count}}
+					{{/count}}
+					- {{calories}} calories
+				</li>
 				{{/items}}
 		</div>
 	</script>
