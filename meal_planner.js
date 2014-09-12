@@ -8,13 +8,11 @@ var generateMeal = function() {
 	dataItems = subset_sum(data, target);
 
 	return dataItems;
-}
+};
 
-var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer) {
+var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, summary) {
 	var splitItems = splitArray(dataItems, numberOfMeals),
 		totalCalories = 0;
-
-	mealsContainer.empty();
 
 	for (i = 0; i < numberOfMeals; i++) {
 		var calorieCount = splitItems[i].length > 1 ? splitItems[i].reduce(function(prev, curr) {
@@ -28,26 +26,40 @@ var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer) {
 	}
 
 	if (numberOfMeals > 1) {
-		$("#totalCalories").text(totalCalories);
-		$("#summary").show();
+		summary.children("#totalCalories").text(totalCalories);
+		summary.show();
 	} else {
-		$("#summary").hide();
+		summary.hide();
 	}
 
 	mealsContainer.show();
-}
+};
+
+var resetResults = function(alert, mealsContainer, summary) {
+	alert.hide();
+	summary.hide();
+	mealsContainer.empty();
+};
 
 $(function() {
 	var mealsContainer = $("#meals"),
 		template = $("#mealTemplate").html(),
 		form = $("form"),
-		numberOfMeals = $("#numberOfMeals");
+		summary = $("summary"),
+		numberOfMeals = $("#numberOfMeals"),
+		alert = $(".alert-danger");
 
 	form.on("submit", function(event) {
 		var dataItems = generateMeal(),
 			mealCount = parseInt(numberOfMeals.val(), 10);
 
-		displayMeal(dataItems, template, mealCount, mealsContainer);
+		resetResults(alert, mealsContainer, summary);
+
+		if (dataItems.length < mealCount) {
+			$(".alert-danger").show();
+		} else {
+			displayMeal(dataItems, template, mealCount, mealsContainer, summary);
+		}
 
 		event.preventDefault();
 	});

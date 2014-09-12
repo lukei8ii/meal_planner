@@ -2,6 +2,6 @@
 	margin-bottom: 15px;
 }
 
-#summary {
+#summary, .alert-danger {
 	display: none;
 }
