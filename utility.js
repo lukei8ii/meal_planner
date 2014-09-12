@@ -1,3 +1,23 @@
+var isValid = function(items) {
+
+    var combos = [],
+        wraps = $.grep(items, function(item, i) {
+        return ( item.category === "Muscle Maker Wraps" );
+    });
+
+    if (wraps.length > 0) {
+        combos = $.grep(items, function(item, i) {
+            return ( item.combo === "Muscle Maker Wraps" );
+        });
+
+        if (combos.length !== wraps.length) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 var subsetSum = function(items, target) {
     items = shuffleArray(items);
 
@@ -20,7 +40,7 @@ var subsetSum = function(items, target) {
                     if (i > 0 || items[0].calories <= duplicateThreshold) {
                         perm = [items[0], items[i]];
                     } else {
-                        continue;
+                        perm = [items[0]]
                     }
                 } else {
                     perm = perms.shift();
@@ -36,8 +56,9 @@ var subsetSum = function(items, target) {
                 perms.push(perm);
 
                 if (Math.abs(sum - target) <= margin) {
-
-                    return perm;
+                    if (isValid(perm)) {
+                        return perm;
+                    }
                 }
             } else {
                 if (layer < depth) {

@@ -10,7 +10,9 @@ var data = [
 	{ name: "Teriyaki Chicken Nuggets", category: "Warm Ups", calories: 285 },
 	{ name: "Loaded Baked Potato", category: "Warm Ups", calories: 209 },
 	{ name: "Edamame", category: "Warm Ups", calories: 121 },
-	{ name: "Soup of the Day", category: "Warm Ups", calories: 200 },
+	{ name: "Soup of the Day Bowl", category: "Warm Ups", calories: 180 },
+	{ name: "Soup of the Day Cup", category: "Warm Ups", calories: 90 },
+	{ name: "Turkey Chili Cup", category: "Warm Ups", calories: 337 },
 
 	{ name: "Italiano Salad with Grilled Chicken", category: "Fit Salads", calories: 395 },
 	{ name: "Muscle Maker Caesar Salad", category: "Fit Salads", calories: 200 },
@@ -51,19 +53,22 @@ var data = [
 	{ name: "Tuscany", category: "Low Carb Solutions", calories: 451 },
 	{ name: "Texas", category: "Low Carb Solutions", calories: 391 },
 
-	{ name: "Grilled Chicken Breast", category: "Extras", calories: 281 },
-	{ name: "Turkey Meatballs", category: "Extras", calories: 325 },
-	{ name: "Pastsa Salad", category: "Extras", calories: 237 },
-	{ name: "Steamed Broccoli", category: "Extras", calories: 24 },
-	{ name: "Cucumber Salad", category: "Extras", calories: 36 },
-	{ name: "Brown Rice", category: "Extras", calories: 329 },
-	{ name: "Baked Potato", category: "Extras", calories: 142 },
-	{ name: "Western Potatoes", category: "Extras", calories: 138 },
-	{ name: "Brown Rice & Beans", category: "Extras", calories: 248 },
-	{ name: "Savory Spinach", category: "Extras", calories: 95 },
+	{ name: "Turkey Meatballs", category: "Extras", combo: "Muscle Maker Wraps", calories: 325 },
+	{ name: "Pastsa Salad", category: "Extras", combo: "Muscle Maker Wraps", calories: 237 },
+	{ name: "Steamed Broccoli", category: "Extras", combo: "Muscle Maker Wraps", calories: 24 },
+	{ name: "Cucumber Salad", category: "Extras", combo: "Muscle Maker Wraps", calories: 36 },
+	{ name: "Brown Rice", category: "Extras", combo: "Muscle Maker Wraps", calories: 329 },
+	{ name: "Baked Potato", category: "Extras", combo: "Muscle Maker Wraps", calories: 142 },
+	{ name: "Western Potatoes", category: "Extras", combo: "Muscle Maker Wraps", calories: 138 },
+	{ name: "Caesar Salad", category: "Extras", combo: "Muscle Maker Wraps", calories: 53 },
+	{ name: "Brown Rice & Beans", category: "Extras", combo: "Muscle Maker Wraps", calories: 261 },
+	{ name: "Savory Spinach", category: "Extras", combo: "Muscle Maker Wraps", calories: 95 },
+	{ name: "Sweet Potato Fries", category: "Extras", combo: "Muscle Maker Wraps", calories: 243 },
+	{ name: "Guacamole", category: "Extras", combo: "Muscle Maker Wraps", calories: 91 },
 	{ name: "Fresh Fish (Tilapia)", category: "Extras", calories: 290 },
 	{ name: "Fresh Shrimp", category: "Extras", calories: 173 },
-	{ name: "USDA Lean Steak", category: "Extras", calories: 248 }
+	{ name: "USDA Steak", category: "Extras", calories: 282 },
+	{ name: "Grilled Chicken Breast", category: "Extras", calories: 281 }
 
 	// Big Protein Shakes
 
