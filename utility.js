@@ -1,4 +1,6 @@
 var subset_sum = function(items, target) {
+    items = shuffleArray(items);
+    
     var perms = [],
     margin = config.calorieMatchMargin,
     depth = config.calorieMatchDepth,
@@ -48,7 +50,7 @@ var subset_sum = function(items, target) {
     return ss(items);
 };
 
-var splitArray = function (a, n) {
+var splitArray = function(a, n) {
     var len = a.length,out = [], i = 0;
 
     while (i < len) {
@@ -58,4 +60,23 @@ var splitArray = function (a, n) {
     }
 
     return out;
+};
+
+var shuffleArray = function(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
