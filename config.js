@@ -1,5 +1,5 @@
 var config = {
 	calorieMatchMargin: 15,
 	calorieMatchDepth: 4,
-	duplicateThreshold: 100
+	duplicateThreshold: 200
 };
