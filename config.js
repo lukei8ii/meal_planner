@@ -1,4 +1,4 @@
 var config = {
-	calorieMatchMargin: 10,
+	calorieMatchMargin: 15,
 	calorieMatchDepth: 4,
 };

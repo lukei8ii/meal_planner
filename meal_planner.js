@@ -11,19 +11,27 @@ var generateMeal = function() {
 }
 
 var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer) {
-	var splitItems = splitArray(dataItems, numberOfMeals);
+	var splitItems = splitArray(dataItems, numberOfMeals),
+		totalCalories = 0;
 
 	mealsContainer.empty();
 
 	for (i = 0; i < numberOfMeals; i++) {
 		var calorieCount = splitItems[i].length > 1 ? splitItems[i].reduce(function(prev, curr) {
 				return (prev.calories || prev) + curr.calories;
-			}) : splitItems[i][0].calories;
-
-		var	meal = { id: i + 1, calories: calorieCount, items: splitItems[i] },
+			}) : splitItems[i][0].calories,
+			meal = { id: i + 1, calories: calorieCount, items: splitItems[i] },
 			rendered = Mustache.render(template, meal);
 
 		mealsContainer.append(rendered);
+		totalCalories += calorieCount;
+	}
+
+	if (numberOfMeals > 1) {
+		$("#totalCalories").text(totalCalories);
+		$("#summary").show();
+	} else {
+		$("#summary").hide();
 	}
 
 	mealsContainer.show();

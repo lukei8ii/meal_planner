@@ -14,9 +14,9 @@
 	<script src="meal_planner.js"></script>
 
 	<script id="mealTemplate" type="x-tmpl-mustache">
-		<div class="meal">
-			<p class="summary">Meal {{id}} - {{calories}} calories</p>
-			<ul class="items">
+		<div>
+			<p>Meal {{id}} - {{calories}} calories</p>
+			<ul>
 				{{#items}}
 				<li>{{name}} - {{calories}} calories</li>
 				{{/items}}
@@ -47,6 +47,7 @@
 
 		<div class="row show-grid">
 			<div class="col-md-8">
+				<p id="summary">Total - <span id="totalCalories"></span> calories</p>
 				<div id="meals"></div>
 			</div>
 		</div>
