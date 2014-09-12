@@ -10,28 +10,43 @@ var generateMeal = function() {
 	return dataItems;
 }
 
-var displayMeal = function(dataItems, mealContainer) {
-	var calorieCount = 0,
-		items = mealContainer.find("#items").empty(),
-		summary = mealContainer.find("#summary");
+var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer) {
+	var splitItems = splitArray(dataItems, numberOfMeals);
 
-	$.each(dataItems, function() {
-		items.append("<li>" + this.name + " - " + this.calories + " calories</li>");
-		calorieCount += this.calories;
-	});
+	mealsContainer.empty();
 
-	summary.text("Your meal - " + calorieCount + " calories");
+	for (i = 0; i < numberOfMeals; i++) {
+		var calorieCount = splitItems[i].length > 1 ? splitItems[i].reduce(function(prev, curr) {
+				return (prev.calories || prev) + curr.calories;
+			}) : splitItems[i][0].calories;
 
-	mealContainer.show();
+		var	meal = { id: i + 1, calories: calorieCount, items: splitItems[i] },
+			rendered = Mustache.render(template, meal);
+
+		mealsContainer.append(rendered);
+	}
+
+	mealsContainer.show();
 }
 
 $(function() {
-	var mealContainer = $("#meal");
+	var mealsContainer = $("#meals"),
+		template = $("#mealTemplate").html(),
+		form = $("form"),
+		numberOfMeals = $("#numberOfMeals");
 
-	$("form").on("submit", function(event) {
-		var dataItems = generateMeal();
-		displayMeal(dataItems, mealContainer);
+	form.on("submit", function(event) {
+		var dataItems = generateMeal(),
+			mealCount = parseInt(numberOfMeals.val(), 10);
+
+		displayMeal(dataItems, template, mealCount, mealsContainer);
 
 		event.preventDefault();
+	});
+
+	numberOfMeals.on("change", function() {
+		var mealCount = parseInt($(this).val(), 10);
+
+		form.find("button").text("Generate Meal" + (mealCount > 1 ? "s" : ""));
 	});
 });
