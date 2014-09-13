@@ -40,7 +40,7 @@ var areDuplicatesUnderThreshold = function(items) {
     return isValid;
 };
 
-var subsetSum = function(items, target) {
+var subsetSum = function(items, calorieTarget) {
     items = shuffleArray(items);
 
     var perms = [],
@@ -72,7 +72,7 @@ var subsetSum = function(items, target) {
 
                 perms.push(perm);
 
-                if (Math.abs(sum - target) <= margin) {
+                if (Math.abs(sum - calorieTarget) <= margin) {
                     if (isValid(perm)) {
                         return perm;
                     }
@@ -123,7 +123,7 @@ var partitionMeals = function(items, partitions) {
         sums[mealIndex] += this.calories;
     });
 
-    return out;
+    return shuffleArray(out);
 };
 
 var shuffleArray = function(array) {

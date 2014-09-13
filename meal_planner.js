@@ -1,11 +1,5 @@
-var generateMeal = function() {
-	var dataItems,
-		target = parseInt($("#desiredCalories").val(), 10);
-
-	// logic to create a meal based on the parameters goes here
-
-	// start by just getting the first items that most closely satisfy the calorie limit
-	dataItems = subsetSum(data, target);
+var generateMeal = function(calorieTarget) {
+	var dataItems = subsetSum(data, calorieTarget);
 
 	return dataItems;
 };
@@ -71,7 +65,8 @@ $(function() {
 		alert = $(".alert-danger");
 
 	form.on("submit", function(event) {
-		var dataItems = generateMeal(),
+		var calorieTarget = parseInt($("#desiredCalories").val(), 10),
+			dataItems = generateMeal(calorieTarget),
 			mealCount = parseInt(numberOfMeals.val(), 10);
 
 		resetResults(alert, mealsContainer, summary);
