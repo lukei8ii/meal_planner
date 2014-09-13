@@ -40,7 +40,11 @@ var areDuplicatesUnderThreshold = function(items) {
     return isValid;
 };
 
-var subsetSum = function(items, calorieTarget) {
+var subsetSum = function(items, calorieTarget, proteinTarget) {
+    if (proteinTarget === 0) {
+        proteinTarget = null;
+    }
+
     items = shuffleArray(items);
 
     var perms = [],
@@ -64,15 +68,20 @@ var subsetSum = function(items, calorieTarget) {
                     perm.push(items[0]);
                 }
 
-                sum = 0;
+                calorieSum = 0,
+                proteinSum = 0;
 
                 for (j = 0; j < perm.length; j++){
-                    sum += perm[j].calories;
+                    calorieSum += perm[j].calories;
+                    proteinSum += perm[j].protein;
                 }
 
                 perms.push(perm);
 
-                if (Math.abs(sum - calorieTarget) <= margin) {
+                meetsCalorieRequirement = Math.abs(calorieSum - calorieTarget) <= margin,
+                meetsProteinRequirement = !proteinSum || proteinSum >= proteinTarget;
+
+                if (meetsCalorieRequirement && meetsProteinRequirement) {
                     if (isValid(perm)) {
                         return perm;
                     }

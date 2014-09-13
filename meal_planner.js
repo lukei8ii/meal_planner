@@ -1,5 +1,5 @@
-var generateMeal = function(calorieTarget) {
-	var dataItems = subsetSum(data, calorieTarget);
+var generateMeal = function(calorieTarget, proteinTarget) {
+	var dataItems = subsetSum(data, calorieTarget, proteinTarget);
 
 	return dataItems;
 };
@@ -49,15 +49,11 @@ var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, s
 		totalCarbs += this.carbs;
 	});
 
-	if (numberOfMeals > 1) {
-		summary.children("#totalCalories").text(totalCalories);
-		summary.children("#totalProtein").text(totalProtein);
-		summary.children("#totalFat").text(totalFat);
-		summary.children("#totalCarbs").text(totalCarbs);
-		summary.show();
-	} else {
-		summary.hide();
-	}
+	summary.children("#totalCalories").text(totalCalories);
+	summary.children("#totalProtein").text(totalProtein);
+	summary.children("#totalFat").text(totalFat);
+	summary.children("#totalCarbs").text(totalCarbs);
+	summary.show();
 
 	mealsContainer.show();
 };
@@ -73,12 +69,15 @@ $(function() {
 		template = $("#mealTemplate").html(),
 		form = $("form"),
 		summary = $("#summary"),
+		desiredCalories = $("#desiredCalories"),
+		desiredProtein = $("#desiredProtein"),
 		numberOfMeals = $("#numberOfMeals"),
 		alert = $(".alert-danger");
 
 	form.on("submit", function(event) {
-		var calorieTarget = parseInt($("#desiredCalories").val(), 10),
-			dataItems = generateMeal(calorieTarget),
+		var calorieTarget = parseInt(desiredCalories.val(), 10),
+			proteinTarget = parseInt(desiredProtein.val(), 10) || null,
+			dataItems = generateMeal(calorieTarget, proteinTarget),
 			mealCount = parseInt(numberOfMeals.val(), 10);
 
 		resetResults(alert, mealsContainer, summary);
