@@ -1,5 +1,8 @@
 var isValid = function(items) {
+    return isComboComplete(items);
+};
 
+var isComboComplete = function(items) {
     var combos = [],
         wraps = $.grep(items, function(item, i) {
         return ( item.category === "Muscle Maker Wraps" );
@@ -78,14 +81,33 @@ var subsetSum = function(items, target) {
     return ss(items);
 };
 
-var splitArray = function(a, n) {
-    var len = a.length,out = [], i = 0;
+var compareCaloriesDesc = function (a,b) {
+    if (a.calories < b.calories)
+        return 1;
+    if (a.calories > b.calories)
+        return -1;
 
-    while (i < len) {
-        var size = Math.ceil((len - i) / n--);
-        out.push(a.slice(i, i + size));
-        i += size;
+    return 0;
+}
+
+var partitionMeals = function(items, partitions) {
+    var out = [],
+        sums = [];
+
+    for (i = 0; i < partitions; i++) {
+        out[i] = [];
+        sums[i] = 0;
     }
+
+    items = items.sort(compareCaloriesDesc);
+
+    $.each(items, function() {
+        var minSum = Math.min.apply(null, sums),
+            mealIndex = sums.indexOf(minSum);
+
+        out[mealIndex].push(this);
+        sums[mealIndex] += this.calories;
+    });
 
     return out;
 };

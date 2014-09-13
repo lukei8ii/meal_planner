@@ -32,7 +32,7 @@ var formatDuplicates = function(dataItems) {
 };
 
 var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, summary) {
-	var splitItems = splitArray(dataItems, numberOfMeals),
+	var splitItems = partitionMeals(dataItems, numberOfMeals),
 		totalCalories = 0;
 
 	for (i = 0; i < numberOfMeals; i++) {
