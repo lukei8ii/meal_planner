@@ -1,5 +1,6 @@
 var isValid = function(items) {
-    return isComboComplete(items);
+    return isComboComplete(items)
+        && areDuplicatesUnderThreshold(items);
 };
 
 var isComboComplete = function(items) {
@@ -21,13 +22,30 @@ var isComboComplete = function(items) {
     return true;
 };
 
+var areDuplicatesUnderThreshold = function(items) {
+    var uniqueItems = [],
+        isValid = true;
+
+    $.each(items, function(i, el){
+        if ($.inArray(el, uniqueItems) === -1) {
+            uniqueItems.push(el);
+        } else {
+            if (el.calories > config.duplicateThreshold) {
+                isValid = false;
+                return false;
+            }
+        }
+    });
+
+    return isValid;
+};
+
 var subsetSum = function(items, target) {
     items = shuffleArray(items);
 
     var perms = [],
     margin = config.calorieMatchMargin,
     depth = config.calorieMatchDepth,
-    duplicateThreshold = config.duplicateThreshold,
     layer = 0,
     attempts = 0,
     sum,
@@ -40,11 +58,7 @@ var subsetSum = function(items, target) {
 
             if (attempts <= items.length * items.length) {
                 if (layer === 0) {
-                    if (i > 0 || items[0].calories <= duplicateThreshold) {
-                        perm = [items[0], items[i]];
-                    } else {
-                        perm = [items[0]]
-                    }
+                    perm = [items[0], items[i]];
                 } else {
                     perm = perms.shift();
                     perm.push(items[0]);
