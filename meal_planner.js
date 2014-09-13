@@ -27,7 +27,10 @@ var formatDuplicates = function(dataItems) {
 
 var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, summary) {
 	var splitItems = partitionMeals(dataItems, numberOfMeals),
-		totalCalories = 0;
+		totalCalories = 0,
+		totalProtein = 0,
+		totalFat = 0,
+		totalCarbs = 0;
 
 	for (i = 0; i < numberOfMeals; i++) {
 		var calorieCount = splitItems[i].length > 1 ? splitItems[i].reduce(function(prev, curr) {
@@ -40,8 +43,17 @@ var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, s
 		totalCalories += calorieCount;
 	}
 
+	$.each(dataItems, function() {
+		totalProtein += this.protein;
+		totalFat += this.fat;
+		totalCarbs += this.carbs;
+	});
+
 	if (numberOfMeals > 1) {
 		summary.children("#totalCalories").text(totalCalories);
+		summary.children("#totalProtein").text(totalProtein);
+		summary.children("#totalFat").text(totalFat);
+		summary.children("#totalCarbs").text(totalCarbs);
 		summary.show();
 	} else {
 		summary.hide();
