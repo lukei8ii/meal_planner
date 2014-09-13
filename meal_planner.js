@@ -1,13 +1,13 @@
 var generateMeal = function(calorieTarget, proteinTarget) {
-	var dataItems = subsetSum(data, calorieTarget, proteinTarget);
+	var dataItems = subsetSum(db().get(), calorieTarget, proteinTarget);
 
 	return dataItems;
 };
 
-var formatDuplicates = function(dataItems) {
+var formatDuplicates = function(items) {
 	var uniqueItems = [];
 
-	$.each(dataItems, function(i, el){
+	$.each(items, function(i, el){
 	    if ($.inArray(el, uniqueItems) === -1) {
 			delete el.count;
 			uniqueItems.push(el);
