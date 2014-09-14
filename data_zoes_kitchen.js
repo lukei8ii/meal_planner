@@ -1,4 +1,4 @@
-RawItemData = RawItemData || {};
+var RawItemData = RawItemData || {};
 
 RawItemData["Zoës Kitchen"] = [
 	{ name: "Tossed Greek Salad", fat: 30, carbs: 47, protein: 57, calories: 710 },

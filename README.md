@@ -1,7 +1,7 @@
-meal_planner
+Meal Planner
 ============
 
-A meal planner for the Muscle Maker Grill menu
+This is a tool to figure out what meals add up to a specified calorie limit.
 
 
-Just open "meal_planner.html" in your favorite browser.
+Just open "index.html" in your favorite browser.

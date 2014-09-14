@@ -1,4 +1,4 @@
-RawItemData = RawItemData || {};
+var RawItemData = RawItemData || {};
 
 RawItemData["Jason's Deli"] = [
 	{ name: "California Club", fat: 52, carbs: 39, protein: 36, calories: 770 },
