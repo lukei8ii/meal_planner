@@ -1,4 +1,4 @@
-var RawItemData = RawItemData || {};
+RawItemData = RawItemData || {};
 
 RawItemData["Chipotle"] = [
 	{ name: "Burrito Bowl", fat: 30, carbs: 63, protein: 51.5, calories: 730 },

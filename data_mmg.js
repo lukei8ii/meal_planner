@@ -1,4 +1,4 @@
-var RawItemData = RawItemData || {};
+RawItemData = RawItemData || {};
 
 RawItemData["Muscle Maker Grill"] = [
 	{ name: "Hollywood Salad", category: "Lighter Side", fat: 17, carbs: 4, protein: 33, calories: 302 },
