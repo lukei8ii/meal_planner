@@ -1,7 +1,75 @@
-var generateMeal = function(calorieTarget, proteinTarget) {
-	var dataItems = subsetSum(db().get(), calorieTarget, proteinTarget);
+var generateMealPlan = function(mealCount, calorieTarget, proteinTarget) {
+	var averageMealCals = Math.round(calorieTarget / mealCount),
+		averageMealProtein = Math.round(proteinTarget / mealCount),
+		sources = Object.keys(RawItemData),
+		selectedSources = [],
+		items = [],
+		nutritionSummary = { calories: 0, protein: 0, fat: 0, carbs: 0 },
+		nutrition = { summary: nutritionSummary, meals: [] },
+		meal;
 
-	return dataItems;
+	// choose some meal sources
+	for (i = 0; i < mealCount; i++) {
+		selectedSources[i] = sources[Math.floor(Math.random()*sources.length)];
+	}
+
+	// choose items for the meals
+	for (i = 0; i < mealCount - 1; i++) {
+		var nutritionMeal = { calories: 0, protein: 0, fat: 0, carbs: 0 };
+
+		meal = randomizedSubsetSum(db({source: selectedSources[i]}).get(),
+			averageMealCals,
+			averageMealProtein,
+			config.mealCalculatorMargin);
+
+		if (meal) {
+			$.each(meal, function() {
+				nutritionMeal.calories += this.calories;
+				nutritionMeal.protein += this.protein;
+				nutritionMeal.fat += this.fat;
+				nutritionMeal.carbs += this.carbs;
+			});
+
+			nutritionSummary.calories += nutritionMeal.calories;
+			nutritionSummary.protein += nutritionMeal.protein;
+			nutritionSummary.fat += nutritionMeal.fat;
+			nutritionSummary.carbs += nutritionMeal.carbs;
+
+			items.push(meal);
+			nutrition.meals.push(nutritionMeal);
+		} else {
+			return null;
+		}
+	}
+
+	var nutritionMeal = { calories: 0, protein: 0, fat: 0, carbs: 0 };
+
+	// choose items for the last meal using a more precise margin
+	meal = randomizedSubsetSum(db({source: selectedSources[i]}).get(),
+		calorieTarget - nutritionSummary.calories,
+		proteinTarget - nutritionSummary.protein,
+		config.mealCalculatorMarginLast);
+
+	if (meal) {
+		$.each(meal, function() {
+			nutritionMeal.calories += this.calories;
+			nutritionMeal.protein += this.protein;
+			nutritionMeal.fat += this.fat;
+			nutritionMeal.carbs += this.carbs;
+		});
+
+		nutritionSummary.calories += nutritionMeal.calories;
+		nutritionSummary.protein += nutritionMeal.protein;
+		nutritionSummary.fat += nutritionMeal.fat;
+		nutritionSummary.carbs += nutritionMeal.carbs;
+
+		items.push(meal);
+		nutrition.meals.push(nutritionMeal);
+	} else {
+		return null;
+	}
+
+	return { items: items, nutrition: nutrition};
 };
 
 var formatDuplicates = function(items) {
@@ -25,34 +93,24 @@ var formatDuplicates = function(items) {
 	return uniqueItems;
 };
 
-var displayMeal = function(dataItems, template, numberOfMeals, mealsContainer, summary) {
-	var splitItems = partitionMeals(dataItems, numberOfMeals),
-		totalCalories = 0,
-		totalProtein = 0,
-		totalFat = 0,
-		totalCarbs = 0;
+// update this to reflect new items array structure
+var displayMeal = function(plan, template, mealsContainer, summary) {
+	var totals = { calories: 0, protein: 0, fat: 0, carbs: 0 },
+		items = plan.items,
+		mealNutrition = plan.nutrition.meals,
+		nutritionSummary = plan.nutrition.summary;
 
-	for (i = 0; i < numberOfMeals; i++) {
-		var calorieCount = splitItems[i].length > 1 ? splitItems[i].reduce(function(prev, curr) {
-				return (prev.calories || prev) + curr.calories;
-			}) : splitItems[i][0].calories,
-			meal = { id: i + 1, calories: calorieCount, items: formatDuplicates(splitItems[i]) },
-			rendered = Mustache.render(template, meal);
+	for (i = 0; i < items.length; i++) {
+		meal = { id: i + 1, source: items[i][0].source, nutrition: mealNutrition[i], items: formatDuplicates(items[i]) };
+		rendered = Mustache.render(template, meal);
 
 		mealsContainer.append(rendered);
-		totalCalories += calorieCount;
 	}
 
-	$.each(dataItems, function() {
-		totalProtein += this.protein;
-		totalFat += this.fat;
-		totalCarbs += this.carbs;
-	});
-
-	summary.children("#totalCalories").text(totalCalories);
-	summary.children("#totalProtein").text(totalProtein);
-	summary.children("#totalFat").text(totalFat);
-	summary.children("#totalCarbs").text(totalCarbs);
+	summary.children("#totalCalories").text(nutritionSummary.calories);
+	summary.children("#totalProtein").text(nutritionSummary.protein);
+	summary.children("#totalFat").text(nutritionSummary.fat);
+	summary.children("#totalCarbs").text(nutritionSummary.carbs);
 	summary.show();
 
 	mealsContainer.show();
@@ -75,20 +133,29 @@ $(function() {
 		alert = $(".alert-danger");
 
 	form.on("submit", function(event) {
+		event.preventDefault();
+
 		var calorieTarget = parseInt(desiredCalories.val(), 10),
 			proteinTarget = parseInt(desiredProtein.val(), 10) || null,
-			dataItems = generateMeal(calorieTarget, proteinTarget),
-			mealCount = parseInt(numberOfMeals.val(), 10);
+			mealCount = parseInt(numberOfMeals.val(), 10),
+			plan = generateMealPlan(mealCount, calorieTarget, proteinTarget),
+			retries = 0;
+
+		if (!plan) {
+			while (!plan && retries < config.mealGenerationRetry) {
+				retries++;
+
+				plan = generateMealPlan(mealCount, calorieTarget, proteinTarget);
+			}
+		}
 
 		resetResults(alert, mealsContainer, summary);
 
-		if (!dataItems || dataItems.length < mealCount) {
+		if (!plan) {
 			$(".alert-danger").show();
 		} else {
-			displayMeal(dataItems, template, mealCount, mealsContainer, summary);
+			displayMeal(plan, template, mealsContainer, summary);
 		}
-
-		event.preventDefault();
 	});
 
 	numberOfMeals.on("change", function() {

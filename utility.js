@@ -1,6 +1,6 @@
 var isValid = function(items) {
-    return isComboComplete(items)
-        && areDuplicatesUnderThreshold(items);
+    return isComboComplete(items);
+        // && areDuplicatesUnderThreshold(items);
 };
 
 var isComboComplete = function(items) {
@@ -40,15 +40,59 @@ var areDuplicatesUnderThreshold = function(items) {
     return isValid;
 };
 
-var subsetSum = function(items, calorieTarget, proteinTarget) {
-    if (proteinTarget === 0) {
+var difference = function (a, b) { return Math.abs(a - b) };
+
+var randomizedSubsetSum = function(items, calorieTarget, proteinTarget, margin) {
+    var usedItems = [],
+        unusedItems = items.slice(0),
+        usedCalorieSum = 0,
+        usedProteinSum = 0,
+        iterationCount = 0;
+
+    if (proteinTarget <= 0) {
         proteinTarget = null;
     }
 
-    items = shuffleArray(items);
+    while (iterationCount < config.iterationCount && difference(calorieTarget, usedCalorieSum) > margin && (!proteinTarget || usedProteinSum < proteinTarget)) {
+        iterationCount++;
 
-    var perms = [],
-    margin = config.calorieMatchMargin,
+        if (usedCalorieSum < calorieTarget) {
+            // move a random item from unusedItems to usedItems and update usedCalorieSum and usedProteinSum
+            var item = unusedItems.splice(Math.floor(Math.random()*unusedItems.length), 1)[0];
+
+            if (!item) {
+                return null;
+            }
+
+            usedCalorieSum += item.calories;
+            usedProteinSum += item.protein;
+
+            usedItems.push(item);
+        } else {
+            // move a random item from usedItems to unusedItems and update usedCalorieSum and usedProteinSum
+            var item = usedItems.splice(Math.floor(Math.random()*usedItems.length), 1)[0]
+
+            usedCalorieSum -= item.calories;
+            usedProteinSum -= item.protein;
+
+            unusedItems.push(item);
+        }
+    }
+
+    if (iterationCount >= config.iterationCount || usedItems.length === 0) {
+        return null;
+    }
+
+    return usedItems;
+};
+
+var subsetSum = function(calorieTarget, proteinTarget, margin, source) {
+    if (proteinTarget <= 0) {
+        proteinTarget = null;
+    }
+
+    var items = shuffleArray(db({source: source}).get()),
+    perms = [],
     depth = config.calorieMatchDepth,
     layer = 0,
     attempts = 0,
@@ -56,6 +100,15 @@ var subsetSum = function(items, calorieTarget, proteinTarget) {
     perm,
     ss = function(items) {
         var item = items.shift();
+
+        if (item) {
+            meetsCalorieRequirement = Math.abs(item.calories - calorieTarget) <= margin,
+            meetsProteinRequirement = !proteinTarget || item.protein >= proteinTarget;
+
+            if (meetsCalorieRequirement && meetsProteinRequirement) {
+                return [item];
+            }
+        }
 
         for (i = 0; i < items.length; i++) {
             attempts = attempts + 1;
@@ -79,7 +132,7 @@ var subsetSum = function(items, calorieTarget, proteinTarget) {
                 perms.push(perm);
 
                 meetsCalorieRequirement = Math.abs(calorieSum - calorieTarget) <= margin,
-                meetsProteinRequirement = !proteinSum || proteinSum >= proteinTarget;
+                meetsProteinRequirement = !proteinTarget || proteinSum >= proteinTarget;
 
                 if (meetsCalorieRequirement && meetsProteinRequirement) {
                     if (isValid(perm)) {
@@ -162,4 +215,4 @@ var getIndexIfObjWithOwnAttr = function(array, attr, value) {
     }
 
     return -1;
-}
+};

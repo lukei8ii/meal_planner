@@ -25,6 +25,7 @@
 	<script src="data_jasons_deli.js"></script>
 	<script src="data_boston_market.js"></script>
 	<script src="data_chipotle.js"></script>
+	<script src="data_grocery.js"></script>
 	<script src="data_jasons_deli.js"></script>
 	<script src="data_mmg.js"></script>
 	<script src="data_panda_express.js"></script>
@@ -39,11 +40,10 @@
 	<!-- JS Templates -->
 	<script id="mealTemplate" type="x-tmpl-mustache">
 		<div>
-			<p>Meal {{id}} - {{calories}} calories</p>
+			<p>Meal {{id}} - {{source}} - {{#nutrition}}{{calories}}{{/nutrition}} calories</p>
 			<ul>
 				{{#items}}
 				<li>
-					({{source}})
 					{{name}}
 					{{#count}}
 					x {{count}}
@@ -80,7 +80,7 @@
 					<div class="form-group">
 						<label for="desiredProtein">With at least this much protein</label>
 						<input type="number" class="form-control" id="desiredProtein" placeholder="(Optional) Grams of protein">
-					</div>					
+					</div>
 					<button type="submit" class="btn btn-default">Generate Meal</button>
 				</form>
 			</div>
@@ -88,7 +88,7 @@
 
 		<div class="row show-grid">
 			<div class="col-md-10">
-				<div class="alert alert-danger" role="alert">Woops, try a different number of calories or meals.</div>
+				<div class="alert alert-danger" role="alert">Looks like we had a problem. Try again!</div>
 				<p id="summary">Total - <span id="totalCalories"></span> calories, <span id="totalProtein"></span>g protein, <span id="totalFat"></span>g fat, <span id="totalCarbs"></span>g carbs</p>
 				<div id="meals"></div>
 			</div>
