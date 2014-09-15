@@ -3,7 +3,7 @@ var generateMealPlan = function(mealCount, calorieTarget, proteinTarget) {
 		averageMealProtein = Math.round(proteinTarget / mealCount),
 		sources = Object.keys(RawItemData),
 		selectedSources = [],
-		items = [],
+		meals = [],
 		nutritionSummary = { calories: 0, protein: 0, fat: 0, carbs: 0 },
 		nutrition = { summary: nutritionSummary, meals: [] },
 		meal;
@@ -35,7 +35,7 @@ var generateMealPlan = function(mealCount, calorieTarget, proteinTarget) {
 			nutritionSummary.fat += nutritionMeal.fat;
 			nutritionSummary.carbs += nutritionMeal.carbs;
 
-			items.push(meal);
+			meals.push(meal);
 			nutrition.meals.push(nutritionMeal);
 		} else {
 			return null;
@@ -63,19 +63,23 @@ var generateMealPlan = function(mealCount, calorieTarget, proteinTarget) {
 		nutritionSummary.fat += nutritionMeal.fat;
 		nutritionSummary.carbs += nutritionMeal.carbs;
 
-		items.push(meal);
+		meals.push(meal);
 		nutrition.meals.push(nutritionMeal);
 	} else {
 		return null;
 	}
 
-	return { items: items, nutrition: nutrition};
+	return { meals: meals, nutrition: nutrition};
 };
 
 var formatDuplicates = function(items) {
+	if (items.length < 2) {
+		return items;
+	}
+
 	var uniqueItems = [];
 
-	$.each(items, function(i, el){
+	$.each(items, function(index, el){
 	    if ($.inArray(el, uniqueItems) === -1) {
 			delete el.count;
 			uniqueItems.push(el);
@@ -96,12 +100,12 @@ var formatDuplicates = function(items) {
 // update this to reflect new items array structure
 var displayMeal = function(plan, template, mealsContainer, summary) {
 	var totals = { calories: 0, protein: 0, fat: 0, carbs: 0 },
-		items = plan.items,
+		meals = plan.meals,
 		mealNutrition = plan.nutrition.meals,
 		nutritionSummary = plan.nutrition.summary;
 
-	for (i = 0; i < items.length; i++) {
-		meal = { id: i + 1, source: items[i][0].source, nutrition: mealNutrition[i], items: formatDuplicates(items[i]) };
+	for (i = 0; i < meals.length; i++) {
+		meal = { id: i + 1, source: meals[i][0].source, nutrition: mealNutrition[i], items: formatDuplicates(meals[i]) };
 		rendered = Mustache.render(template, meal);
 
 		mealsContainer.append(rendered);
