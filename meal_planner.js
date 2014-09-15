@@ -14,13 +14,26 @@ var generateMealPlan = function(mealCount, calorieTarget, proteinTarget) {
 	}
 
 	// choose items for the meals
-	for (i = 0; i < mealCount - 1; i++) {
-		var nutritionMeal = { calories: 0, protein: 0, fat: 0, carbs: 0 };
+	for (i = 0; i < mealCount; i++) {
+		var nutritionMeal = { calories: 0, protein: 0, fat: 0, carbs: 0 },
+			calorieTargetMeal,
+			proteinTargetMeal,
+			marginMeal;
+
+		if (i < mealCount -1) {
+			calorieTargetMeal = averageMealCals;
+			proteinTargetMeal = averageMealProtein;
+			marginMeal = config.mealCalculatorMargin;
+		} else {
+			calorieTargetMeal = calorieTarget - nutritionSummary.calories;
+			proteinTargetMeal = proteinTarget - nutritionSummary.protein;
+			marginMeal = config.mealCalculatorMarginLast;
+		}
 
 		meal = randomizedSubsetSum(db({source: selectedSources[i]}).get(),
-			averageMealCals,
-			averageMealProtein,
-			config.mealCalculatorMargin);
+			calorieTargetMeal,
+			proteinTargetMeal,
+			marginMeal);
 
 		if (meal) {
 			$.each(meal, function() {
@@ -40,33 +53,6 @@ var generateMealPlan = function(mealCount, calorieTarget, proteinTarget) {
 		} else {
 			return null;
 		}
-	}
-
-	var nutritionMeal = { calories: 0, protein: 0, fat: 0, carbs: 0 };
-
-	// choose items for the last meal using a more precise margin
-	meal = randomizedSubsetSum(db({source: selectedSources[i]}).get(),
-		calorieTarget - nutritionSummary.calories,
-		proteinTarget - nutritionSummary.protein,
-		config.mealCalculatorMarginLast);
-
-	if (meal) {
-		$.each(meal, function() {
-			nutritionMeal.calories += this.calories;
-			nutritionMeal.protein += this.protein;
-			nutritionMeal.fat += this.fat;
-			nutritionMeal.carbs += this.carbs;
-		});
-
-		nutritionSummary.calories += nutritionMeal.calories;
-		nutritionSummary.protein += nutritionMeal.protein;
-		nutritionSummary.fat += nutritionMeal.fat;
-		nutritionSummary.carbs += nutritionMeal.carbs;
-
-		meals.push(meal);
-		nutrition.meals.push(nutritionMeal);
-	} else {
-		return null;
 	}
 
 	return { meals: meals, nutrition: nutrition};
