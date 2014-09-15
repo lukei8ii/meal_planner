@@ -80,7 +80,7 @@ var formatDuplicates = function(items) {
 			delete el.count;
 			uniqueItems.push(el);
 		} else {
-			var dupeIndex = getIndexIfObjWithOwnAttr(uniqueItems, "name", el.name);
+			var dupeIndex = getIndexOfObjWithOwnAttr(uniqueItems, "name", el.name);
 
 			if (uniqueItems[dupeIndex].count) {
 				uniqueItems[dupeIndex].count++;
