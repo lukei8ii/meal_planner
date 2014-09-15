@@ -1,6 +1,6 @@
 var isValid = function(items) {
-    return isComboComplete(items);
-        // && areDuplicatesUnderThreshold(items);
+    return isComboComplete(items)
+        && areDuplicatesUnderThreshold(items);
 };
 
 var isComboComplete = function(items) {
