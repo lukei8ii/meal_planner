@@ -1,9 +1,18 @@
-var isValid = function(items) {
-    return isComboComplete(items)
-        && areDuplicatesUnderThreshold(items);
+var difference = function (a, b) { return Math.abs(a - b) };
+
+var isInCalorieMargin = function(calories, target, margin) {
+    return difference(calories, target) <= margin;
+};
+
+var isAboveProteinMinimum = function(protein, target) {
+    return !target || protein >= target;
 };
 
 var isComboComplete = function(items) {
+    if (items.length === 0 || items[0].source !== "Muscle Maker Grill") {
+        return true;
+    }
+
     var combos = [],
         wraps = $.grep(items, function(item, i) {
         return ( item.category === "Muscle Maker Wraps" );
@@ -23,6 +32,10 @@ var isComboComplete = function(items) {
 };
 
 var areDuplicatesUnderThreshold = function(items) {
+    if (items.length === 0) {
+        return true;
+    }
+
     var uniqueItems = [],
         isValid = true;
 
@@ -40,7 +53,12 @@ var areDuplicatesUnderThreshold = function(items) {
     return isValid;
 };
 
-var difference = function (a, b) { return Math.abs(a - b) };
+var isValid = function(items, calorieSum, calorieTarget, calorieMargin, proteinSum, proteinTarget) {
+    return isInCalorieMargin(calorieSum, calorieTarget, calorieMargin)
+        && isAboveProteinMinimum(proteinSum, proteinTarget)
+        && areDuplicatesUnderThreshold(items)
+        && isComboComplete(items);
+};
 
 var randomizedSubsetSum = function(items, calorieTarget, proteinTarget, margin) {
     var usedItems = [],
@@ -53,7 +71,7 @@ var randomizedSubsetSum = function(items, calorieTarget, proteinTarget, margin) 
         proteinTarget = null;
     }
 
-    while (iterationCount < config.iterationCount && (difference(calorieTarget, usedCalorieSum) > margin || (!proteinTarget || usedProteinSum < proteinTarget))) {
+    while (iterationCount < config.iterationCount && !isValid(usedItems, usedCalorieSum, calorieTarget, margin, usedProteinSum, proteinTarget)) {
         iterationCount++;
 
         if (usedCalorieSum < calorieTarget) {

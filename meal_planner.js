@@ -164,8 +164,7 @@ $(function() {
 	});
 
 	numberOfMeals.on("change", function() {
-		var mealCount = $(this).val();
-		form.find("button").text("Generate Meal" + (parseInt(mealCount, 10) > 1 ? "s" : ""));
+		form.find("button").text("Generate Meal" + (parseInt($(this).val(), 10) > 1 ? "s" : ""));
 		setCookie();
 	});
 
