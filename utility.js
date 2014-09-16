@@ -53,7 +53,7 @@ var randomizedSubsetSum = function(items, calorieTarget, proteinTarget, margin) 
         proteinTarget = null;
     }
 
-    while (iterationCount < config.iterationCount && difference(calorieTarget, usedCalorieSum) > margin && (!proteinTarget || usedProteinSum < proteinTarget)) {
+    while (iterationCount < config.iterationCount && (difference(calorieTarget, usedCalorieSum) > margin || (!proteinTarget || usedProteinSum < proteinTarget))) {
         iterationCount++;
 
         if (usedCalorieSum < calorieTarget) {

@@ -3,6 +3,6 @@ var config = {
 	mealCalculatorMarginLast: 25,
 	calorieMatchDepth: 4,
 	duplicateThreshold: 300,
-	iterationCount: 1000,
+	iterationCount: 300,
 	mealGenerationRetry: 10
 };

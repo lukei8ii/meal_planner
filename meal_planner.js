@@ -120,7 +120,22 @@ $(function() {
 		desiredCalories = $("#desiredCalories"),
 		desiredProtein = $("#desiredProtein"),
 		numberOfMeals = $("#numberOfMeals"),
-		alert = $(".alert-danger");
+		alert = $(".alert-danger"),
+		cookie = $.cookie(),
+		setCookie = function() {
+			$.cookie("calories", desiredCalories.val());
+			$.cookie("meals", numberOfMeals.val());
+			$.cookie("protein", desiredProtein.val());
+		},
+		getCookie = function() {
+			if (Object.keys(cookie).length > 0) {
+				desiredCalories.val(cookie.calories);
+				numberOfMeals.val(cookie.meals);
+				desiredProtein.val(cookie.protein);
+			}
+		};
+
+	getCookie();
 
 	form.on("submit", function(event) {
 		event.preventDefault();
@@ -149,8 +164,16 @@ $(function() {
 	});
 
 	numberOfMeals.on("change", function() {
-		var mealCount = parseInt($(this).val(), 10);
+		var mealCount = $(this).val();
+		form.find("button").text("Generate Meal" + (parseInt(mealCount, 10) > 1 ? "s" : ""));
+		setCookie();
+	});
 
-		form.find("button").text("Generate Meal" + (mealCount > 1 ? "s" : ""));
+	desiredCalories.on("change", function() {
+		setCookie();
+	});
+
+	desiredProtein.on("change", function() {
+		setCookie();
 	});
 });
