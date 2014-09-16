@@ -90,12 +90,12 @@ var displayMeal = function(plan, template, mealsContainer, summary) {
 		mealNutrition = plan.nutrition.meals,
 		nutritionSummary = plan.nutrition.summary;
 
-	for (i = 0; i < meals.length; i++) {
-		meal = { id: i + 1, source: meals[i][0].source, nutrition: mealNutrition[i], items: formatDuplicates(meals[i]) };
+	$.each(meals, function(mealIndex) {
+		meal = { id: mealIndex + 1, source: this[0].source, nutrition: mealNutrition[mealIndex], items: formatDuplicates(this) };
 		rendered = Mustache.render(template, meal);
 
 		mealsContainer.append(rendered);
-	}
+	});
 
 	summary.children("#totalCalories").text(nutritionSummary.calories);
 	summary.children("#totalProtein").text(nutritionSummary.protein);
