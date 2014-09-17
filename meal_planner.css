@@ -15,7 +15,7 @@ body {
 }
 
 #mainModal .modal-dialog {
-	width: 620px;
+	width: 635px;
 }
 
 #desiredCalories, #desiredProtein, #numberOfMeals {
@@ -25,6 +25,10 @@ body {
 #desiredCalories, #desiredProtein {
 	width: 45px;
 	padding: 4px 6px;
+}
+
+#mainModal form input[type=number] {
+	-moz-appearance:textfield;
 }
 
 #mainModal form input[type=number]::-webkit-inner-spin-button,
