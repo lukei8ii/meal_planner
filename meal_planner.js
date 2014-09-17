@@ -134,9 +134,19 @@ $(function() {
 				numberOfMeals.val(cookie.meals);
 				desiredProtein.val(cookie.protein);
 			}
+		},
+		fixMealDisplay = function() {
+			var number = parseInt(numberOfMeals.val(), 10);
+
+			if (number !== 1) {
+				mealDisplay.text("meals");
+			} else {
+				mealDisplay.text("meal");
+			}
 		};
 
 	getCookie();
+	fixMealDisplay();
 
 	form.on("submit", function(event) {
 		event.preventDefault();
@@ -165,16 +175,10 @@ $(function() {
 	});
 
 	numberOfMeals.on("change", function() {
-		var number = parseInt(numberOfMeals.val(), 10);
-
-		if (number !== 1) {
-			mealDisplay.text("meals");
-		} else {
-			mealDisplay.text("meal");
-		}
-
+		fixMealDisplay();
 		setCookie();
 	});
+
 	desiredCalories.on("change", setCookie);
 	desiredProtein.on("change", setCookie);
 });
