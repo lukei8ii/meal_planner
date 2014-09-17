@@ -1,3 +1,7 @@
+body {
+	background: url(themes/restaurant_icons.png);
+}
+
 .show-grid {
 	margin-bottom: 15px;
 }
