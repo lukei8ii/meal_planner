@@ -15,6 +15,10 @@ body {
 }
 
 #mainModal .modal-dialog {
+	width: 620px;
+}
+
+#mainModal .modal-dialog, x:-moz-any-link {
 	width: 635px;
 }
 
