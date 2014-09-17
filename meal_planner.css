@@ -10,7 +10,11 @@
 	display: block;
 }
 
-#desiredCalories, #numberOfMeals {
+#mainModal .modal-dialog {
+	width: 620px;
+}
+
+#desiredCalories, #desiredProtein, #numberOfMeals {
 	margin: 0 5px;
 }
 
