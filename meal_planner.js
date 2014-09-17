@@ -120,6 +120,7 @@ $(function() {
 		desiredCalories = $("#desiredCalories"),
 		desiredProtein = $("#desiredProtein"),
 		numberOfMeals = $("#numberOfMeals"),
+		mealDisplay = $("#mealDisplay"),
 		alert = $(".alert-danger"),
 		cookie = $.cookie(),
 		setCookie = function() {
@@ -164,15 +165,16 @@ $(function() {
 	});
 
 	numberOfMeals.on("change", function() {
-		form.find("button").text("Generate Meal" + (parseInt($(this).val(), 10) > 1 ? "s" : ""));
-		setCookie();
-	});
+		var number = parseInt(numberOfMeals.val(), 10);
 
-	desiredCalories.on("change", function() {
-		setCookie();
-	});
+		if (number !== 1) {
+			mealDisplay.text("meals");
+		} else {
+			mealDisplay.text("meal");
+		}
 
-	desiredProtein.on("change", function() {
 		setCookie();
 	});
+	desiredCalories.on("change", setCookie);
+	desiredProtein.on("change", setCookie);
 });

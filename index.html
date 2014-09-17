@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
+	<link rel="stylesheet" href="themes/simplex.min.css">
+
 	<link rel="stylesheet" href="meal_planner.css">
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -58,42 +60,39 @@
 	<title>Meal Planner</title>
 </head>
 <body>
-	<div class="col-md-8">
-		<h1>Meal Planner</h1>
-
-		<div class="row show-grid">
-			<div class="col-md-5">
-				<form role="form">
-					<div class="form-group">
-						<label for="desiredCalories">I want to eat this many calories</label>
-						<input type="number" required class="form-control" id="desiredCalories" placeholder="Calories">
+	<div class="container">
+		<div id="mainModal" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title">Daily Meal Planner</h2>
 					</div>
-					<div class="form-group">
-						<label for="numberOfMeals">Over this many meals</label>
-						<select required class="form-control" id="numberOfMeals">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						</select>
+					<div class="modal-body">
+						<form class="form-inline" role="form">
+							<span>I want to eat</span>
+							<input type="number" required class="form-control" id="desiredCalories">
+							<span>calories and </span>
+							<input type="number" class="form-control" id="desiredProtein" placeholder="any">
+							<span>grams of protein in</span>
+							<select required class="form-control" id="numberOfMeals">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+							<span id="mealDisplay">meal</span>
+							<button type="submit" class="btn btn-default">Generate!</button>
+						</form>
 					</div>
-					<div class="form-group">
-						<label for="desiredProtein">With at least this much protein</label>
-						<input type="number" class="form-control" id="desiredProtein" placeholder="(Optional) Grams of protein">
+					<div class="modal-footer">
+						<div class="alert alert-danger" role="alert">Your configuration is a little tricky. Try again!</div>
+						<p id="summary">Total - <span id="totalCalories"></span> calories, <span id="totalProtein"></span>g protein, <span id="totalFat"></span>g fat, <span id="totalCarbs"></span>g carbs</p>
+						<div id="meals"></div>
 					</div>
-					<button type="submit" class="btn btn-default">Generate Meal</button>
-				</form>
+				</div>
 			</div>
 		</div>
-
-		<div class="row show-grid">
-			<div class="col-md-5">
-				<div class="alert alert-danger" role="alert">Your configuration is a little tricky. Try again!</div>
-				<p id="summary">Total - <span id="totalCalories"></span> calories, <span id="totalProtein"></span>g protein, <span id="totalFat"></span>g fat, <span id="totalCarbs"></span>g carbs</p>
-				<div id="meals"></div>
-			</div>
-		</div>
-	</div>
+	</container>
 </body>
 </html>
