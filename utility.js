@@ -18,14 +18,15 @@ var Utility = {
             return items;
         }
 
-        var uniqueItems = [];
+        var uniqueItems = [],
+            self = this;
 
         $.each(items, function(index, el){
             if ($.inArray(el, uniqueItems) === -1) {
                 delete el.count;
                 uniqueItems.push(el);
             } else {
-                var dupeIndex = this.getIndexOfObjWithOwnAttr(uniqueItems, "name", el.name);
+                var dupeIndex = self.getIndexOfObjWithOwnAttr(uniqueItems, "name", el.name);
 
                 if (uniqueItems[dupeIndex].count) {
                     uniqueItems[dupeIndex].count++;
