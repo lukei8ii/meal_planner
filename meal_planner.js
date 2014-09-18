@@ -31,8 +31,8 @@ var drawChart = function(container, results) {
 
 	// Create the data table.
 	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'Topping');
-	data.addColumn('number', 'Slices');
+	data.addColumn("string", "Macro");
+	data.addColumn("number", "Grams");
 	data.addRows([
 		["Protein " + results.protein + "g", results.protein],
 		["Fat " + results.fat + "g", results.fat],
@@ -46,7 +46,8 @@ var drawChart = function(container, results) {
 		legend: { position: "none" },
 		pieSliceText: "label",
 		pieSliceTextStyle: { fontSize: 16 },
-		chartArea: { left: 0, top: 0, width: "100%", height: "100%" }
+		chartArea: { left: 1, top: 0, width: "99%", height: "100%" },
+		is3D: true
 	};
 
 	// Instantiate and draw our chart, passing in some options.
