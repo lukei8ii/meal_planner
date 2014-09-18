@@ -38,26 +38,18 @@
 	<script src="data_zoes_kitchen.js"></script>
 
 	<!-- Site scripts -->
-	<script src="config.js"></script>
 	<script src="db.js"></script>
+	<script src="config.js"></script>
 	<script src="utility.js"></script>
-	<script src="validation.js"></script>
-	<script src="mealEngine.js"></script>
 	<script src="meal_planner.js"></script>
 
 	<!-- JS Templates -->
-	<script id="summaryTemplate" type="x-tmpl-mustache">
-		<div class="alert alert-success" role="alert">
-			<strong>Total</strong> - {{calories}} calories, {{protein}}g protein, {{fat}}g fat, {{carbs}}g carbs
-		</div>
-	</script>
-
 	<script id="mealTemplate" type="x-tmpl-mustache">
-		<div class="panel panel-default">
-			<div class="panel-heading">Meal {{id}} - {{source}} - {{#nutrition}}{{calories}}{{/nutrition}} calories</div>
-			<ul class="list-group">
+		<div>
+			<p>Meal {{id}} - {{source}} - {{#nutrition}}{{calories}}{{/nutrition}} calories</p>
+			<ul>
 				{{#items}}
-				<li class="list-group-item">
+				<li>
 					{{name}}
 					{{#count}}
 					x {{count}}
@@ -65,7 +57,6 @@
 					- {{calories}} calories
 				</li>
 				{{/items}}
-			</ul>
 		</div>
 	</script>
 
@@ -73,43 +64,38 @@
 </head>
 <body>
 	<div class="container">
-		<div class="header">
-			<h3 class="text-muted text-center">I want to eat...</h3>
-		</div>
-		<div class="main-form">
-			<form class="form-inline" role="form">
-				<div class="form-group">
-					<label class="sr-only" for="desiredCalories">Desired Calories</label>
-					<div class="input-group">
-						<input type="number" required class="form-control" id="desiredCalories" placeholder="This many calories">
-						<span class="input-group-addon">calories</span>
+		<div id="mainModal" class="modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title">Daily Meal Planner</h2>
+					</div>
+					<div class="modal-body">
+						<form class="form-inline" role="form">
+							<span>I want to eat</span>
+							<input type="number" required class="form-control" id="desiredCalories">
+							<span>calories and </span>
+							<input type="number" class="form-control" id="desiredProtein" placeholder="any">
+							<span>grams of protein in</span>
+							<select required class="form-control" id="numberOfMeals">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+							<span id="mealDisplay">meal</span>
+							<button type="submit" class="btn btn-primary">Generate!</button>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<div class="alert alert-danger" role="alert">Your configuration is a little tricky. Try again!</div>
+						<p id="summary">Total - <span id="totalCalories"></span> calories, <span id="totalProtein"></span>g protein, <span id="totalFat"></span>g fat, <span id="totalCarbs"></span>g carbs</p>
+						<div id="meals"></div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="sr-only" for="desiredProtein">Desired Protein</label>
-					<div class="input-group">
-						<input type="number" class="form-control" id="desiredProtein" placeholder="This much protein">
-						<span class="input-group-addon">grams of protein</span>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="sr-only" for="desiredMeals">Desired Meal Count</label>
-					<select required class="form-control" id="desiredMeals">
-						<option value="1">1 meal</option>
-						<option value="2">2 meals</option>
-						<option value="3">3 meals</option>
-						<option value="4">4 meals</option>
-						<option value="5">5 meals</option>
-						<option value="6">6 meals</option>
-					</select>
-				</div>
-				<button type="submit" class="btn btn-primary btn-lg btn-block">Generate!</button>
-			</form>
+			</div>
 		</div>
-		<div class="alert alert-danger" role="alert">
-			Your configuration is a little tricky. Try again!
-		</div>
-		<div class="results"></div>
-	</div>
+	</container>
 </body>
 </html>

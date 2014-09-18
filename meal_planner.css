@@ -1,50 +1,7 @@
-body {
-	background: url(themes/restaurant_icons.png);
+.main-form {
+	margin-bottom: 20px;
 }
 
-.show-grid {
-	margin-bottom: 15px;
-}
-
-#summary, .alert-danger {
+.main-form + .alert-danger {
 	display: none;
-}
-
-#mainModal {
-	display: block;
-}
-
-#mainModal .modal-dialog {
-	width: 620px;
-}
-
-#mainModal .modal-dialog, x:-moz-any-link {
-	width: 635px;
-}
-
-#desiredCalories, #desiredProtein, #numberOfMeals {
-	margin: 0 5px;
-}
-
-#desiredCalories, #desiredProtein {
-	width: 45px;
-	padding: 4px 6px;
-}
-
-#mainModal form input[type=number] {
-	-moz-appearance:textfield;
-}
-
-#mainModal form input[type=number]::-webkit-inner-spin-button,
-#mainModal form input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-#mainModal form button {
-	float: right;
-}
-
-#mainModal .modal-footer {
-	text-align: left;
 }
