@@ -1,17 +1,22 @@
-var displayMeal = function(plan, summaryTemplate, mealTemplate, resultsContainer) {
+var displayMeal = function(plan, template, resultsContainer) {
 	var totals = { calories: 0, protein: 0, fat: 0, carbs: 0 },
 		meals = plan.meals,
 		mealNutrition = plan.nutrition.meals,
-		summary = plan.nutrition.summary;
+		results = plan.nutrition.summary,
+		rendered;
 
-	resultsContainer.append(Mustache.render(summaryTemplate, summary));
+	results.meals = [];
 
 	$.each(meals, function(mealIndex) {
-		var meal = { id: mealIndex + 1, source: this[0].source, nutrition: mealNutrition[mealIndex], items: Utility.formatDuplicates(this) },
-			rendered = Mustache.render(mealTemplate, meal);
+		var meal = { id: mealIndex + 1, source: this[0].source, nutrition: mealNutrition[mealIndex], items: Utility.formatDuplicates(this) };
 
-		resultsContainer.append(rendered);
+		results.meals.push(meal);
 	});
+
+	rendered = Mustache.render(template, results);
+	resultsContainer.append(rendered);
+
+	drawChart($("#chart_div")[0], results);
 };
 
 var resetResults = function(alert, resultsContainer) {
@@ -19,10 +24,39 @@ var resetResults = function(alert, resultsContainer) {
 	resultsContainer.empty();
 };
 
+// Load the Visualization API and the piechart package.
+google.load('visualization', '1.0', {'packages':['corechart']});
+
+var drawChart = function(container, results) {
+
+	// Create the data table.
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Topping');
+	data.addColumn('number', 'Slices');
+	data.addRows([
+		["Protein " + results.protein + "g", results.protein],
+		["Fat " + results.fat + "g", results.fat],
+		["Carbs " + results.carbs + "g", results.carbs]
+	]);
+
+	// Set chart options
+	var options = {
+		width: 258,
+		height: 258,
+		legend: { position: "none" },
+		pieSliceText: "label",
+		pieSliceTextStyle: { fontSize: 16 },
+		chartArea: { left: 0, top: 0, width: "100%", height: "100%" }
+	};
+
+	// Instantiate and draw our chart, passing in some options.
+	var chart = new google.visualization.PieChart(container);
+	chart.draw(data, options);
+};
+
 $(function() {
 	var resultsContainer = $(".results"),
-		summaryTemplate = $("#summaryTemplate").html(),
-		mealTemplate = $("#mealTemplate").html(),
+		template = $("#template").html(),
 		desiredCalories = $("#desiredCalories"),
 		desiredProtein = $("#desiredProtein"),
 		desiredMeals = $("#desiredMeals"),
@@ -62,7 +96,7 @@ $(function() {
 		if (!plan) {
 			alert.show();
 		} else {
-			displayMeal(plan, summaryTemplate, mealTemplate, resultsContainer);
+			displayMeal(plan, template, resultsContainer);
 		}
 	});
 

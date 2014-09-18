@@ -26,6 +26,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+	<script src="https://www.google.com/jsapi"></script>
 
 	<!-- Restaurant Data -->
 	<script src="data_jasons_deli.js"></script>
@@ -46,27 +47,34 @@
 	<script src="meal_planner.js"></script>
 
 	<!-- JS Templates -->
-	<script id="summaryTemplate" type="x-tmpl-mustache">
-		<div class="alert alert-success" role="alert">
-			<strong>Total</strong> - {{calories}} calories, {{protein}}g protein, {{fat}}g fat, {{carbs}}g carbs
-		</div>
-	</script>
-
-	<script id="mealTemplate" type="x-tmpl-mustache">
+	<script id="template" type="x-tmpl-mustache">
 		<div class="panel panel-default">
-			<div class="panel-heading">Meal {{id}} - {{source}} - {{#nutrition}}{{calories}}{{/nutrition}} calories</div>
+			<div class="panel-heading">
+				<strong>Total - {{calories}} calories</strong>
+			</div>
+			<div class="panel-body">
+				<div id="chart_div"></div>
+			</div>
+		</div>
+		{{#meals}}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Meal {{id}} - {{source}}
+				<br><em>{{#nutrition}}{{calories}}{{/nutrition}} calories</em>
+			</div>
 			<ul class="list-group">
 				{{#items}}
 				<li class="list-group-item">
 					{{name}}
+					<br><em>{{calories}} calories</em>
 					{{#count}}
-					x {{count}}
+					<span class="badge">{{count}}</span>
 					{{/count}}
-					- {{calories}} calories
 				</li>
 				{{/items}}
 			</ul>
 		</div>
+		{{/meals}}
 	</script>
 
 	<title>Meal Planner</title>
