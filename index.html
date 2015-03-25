@@ -33,6 +33,7 @@
 	<script src="data_boston_market.js"></script>
 	<script src="data_chipotle.js"></script>
 	<script src="data_grocery.js"></script>
+	<script src="data_in_n_out.js"></script>
 	<script src="data_jasons_deli.js"></script>
 	<script src="data_mmg.js"></script>
 	<script src="data_panda_express.js"></script>
@@ -50,7 +51,7 @@
 	<script id="template" type="x-tmpl-mustache">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<strong>Total - {{calories}} calories</strong>
+				<strong>Daily Total - {{calories}} calories</strong>
 			</div>
 			<div class="panel-body">
 				<div id="chart_div"></div>
@@ -59,7 +60,7 @@
 		{{#meals}}
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				Meal {{id}} - {{source}}
+				<strong>Meal {{id}} - {{source}}</strong>
 				<br><em>{{#nutrition}}{{calories}}{{/nutrition}} calories</em>
 			</div>
 			<ul class="list-group">
